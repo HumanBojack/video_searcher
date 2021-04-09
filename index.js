@@ -125,7 +125,16 @@ const showKeywordsList = (value) => {
     if (value.length >= 3) {
         const keyWordUl = document.querySelector(".inputKeywordsHandle ul");
         resetKeywordsUl();
-        console.info("test");
+
+        let firstMatch = allKeywords.find(keyword => cleanedKeyword(keyword).includes(cleanedKeyword(value)));
+        let relatedTags = keywordsCategories.find(cat => cat.keywords.includes(firstMatch)).keywords;
+        let search = new Set([firstMatch, ...relatedTags]);
+
+        search.forEach(keyword => {
+            keyWordUl.innerHTML += `
+            <li onclick="addNewKeyword('${keyword}', '${cleanedKeyword(keyword)}')">${keyword}</li>
+            `;
+        });
         
         // This will allow you to add a new element in the list under the text input
         // On click, we add the keyword, like so:
