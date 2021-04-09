@@ -72,11 +72,15 @@ const addNewKeyword = (label, keyword) => {
 };
 
 // We reload the articles depends of the currentKeywords
-// TODO: Modify this function to display only articles that contain at least one of the selected keywords.
+// TODO: Modify this function to display only articles that contain at least one of the selected keywords. DONE
 const reloadArticles = () => {
     document.querySelector('.articlesList').innerHTML = '';
     
-    const articlesToShow = data.articles;
+    let articlesToShow = data.articles.filter(article => article.tags.some(tag => currentKeywords.includes(tag)));
+    if (articlesToShow.length == 0) {
+        articlesToShow = data.articles;
+    }
+
     articlesToShow.forEach((article) => {
         document.querySelector('.articlesList').innerHTML += `
             <article>
@@ -106,11 +110,9 @@ const resetInput = () => {
 };
 
 // Clean a keyword to lowercase and without special characters
-// TODO: Make the cleaning
+// TODO: Make the cleaning DONE
 const cleanedKeyword = (keyword) => {
-    const cleanedKeyword = keyword;
-
-    return cleanedKeyword;
+    return keyword.toLowerCase().replace(/\W+/gm, "");
 };
 
 // TODO: Modify this function to show the keyword containing a part of the word inserted
@@ -123,6 +125,7 @@ const showKeywordsList = (value) => {
     if (value.length >= 3) {
         const keyWordUl = document.querySelector(".inputKeywordsHandle ul");
         resetKeywordsUl();
+        console.info("test");
         
         // This will allow you to add a new element in the list under the text input
         // On click, we add the keyword, like so:
